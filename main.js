@@ -26,6 +26,7 @@
 // <-------- STEP FOUR -------->
 // *** create flip animation ***
 // 10. this.flip in Tile class
+// 11. clear canvas, shrink in x-direction
 
 var canvas, ctx;
 var data;
@@ -59,6 +60,7 @@ function update() {
 }
 
 function render() {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	data.draw(ctx);
 }
 
@@ -122,10 +124,21 @@ function Tile(x, y) {
 	this.draw = function(ctx) {
 		if (anim <= 0) {
 			ctx.drawImage(tile, x, y);
+			return;
 		}
 
+		var res = 2;
 		var t = anim > 0.5 ? Tile.BLANK : tile;
-		ctx.drawImage(t, x, y);
+		var p = -anim + 1;
+
+		for (var i=0; i < 100; i += res) {
+			ctx.drawImage(t, i, 0, res, 100,
+				x + i - p*i,
+				y,
+				res,
+				100
+			)
+		}
 	}
 }
 
