@@ -64,6 +64,8 @@ function Tile(x, y) {
 		_ctx = _c.getContext("2d");
 
 		_ctx.fillStyle = "pink";
+		_ctx.lineWidth = 4;
+		_ctx.strokeStyle = "white";
 
 		// Blank
 		_ctx.fillRect(0, 0, 100, 100);
