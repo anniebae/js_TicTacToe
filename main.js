@@ -17,8 +17,15 @@
 // 6d. draw data with context (function render)
 
 // <-------- STEP THREE -------->
-// *** create NOUGHT ***
+// *** create NOUGHT & CROSS ***
 // 7. create inner canvas (var _c)
+// 8. NOUGHT: _ctx.arc(50, 50, 30, 0, 2*Math.PI) 
+//		//(start center pt x, start center pt y, radius, start distance, end distance)
+// 9. CROSS: create with moveTo and lineTo
+
+// <-------- STEP FOUR -------->
+// *** create flip animation ***
+// 10. this.flip in Tile class
 
 var canvas, ctx;
 var data;
@@ -37,6 +44,7 @@ window.onload = function main() {
 
 function init() {
 	data = new Tile(20,20);
+	data.flip(Tile.NOUGHT);
 }
 
 function tick() {
@@ -47,7 +55,7 @@ function tick() {
 }
 
 function update() {
-
+	data.update();
 }
 
 function render() {
@@ -57,6 +65,7 @@ function render() {
 function Tile(x, y) {
 	var x = x, y = y;
 	var tile = Tile.BLANK;
+	var anim = 0;
 
 	if (tile == null) {
 		var _c = document.createElement("canvas");
@@ -66,6 +75,7 @@ function Tile(x, y) {
 		_ctx.fillStyle = "pink";
 		_ctx.lineWidth = 4;
 		_ctx.strokeStyle = "white";
+		_ctx.lineCap = "round"
 
 		// Blank
 		_ctx.fillRect(0, 0, 100, 100);
@@ -82,15 +92,40 @@ function Tile(x, y) {
 		Tile.NOUGHT = new Image();
 		Tile.NOUGHT.src = _c.toDataURL();
 
-		tile = Tile.NOUGHT;
+		// Cross
+		_ctx.fillRect(0, 0, 100, 100);
+
+		_ctx.beginPath();
+		_ctx.moveTo(20, 20);
+		_ctx.lineTo(80, 80);
+		_ctx.moveTo(80, 20);
+		_ctx.lineTo(20, 80);
+		_ctx.stroke();
+
+		Tile.CROSS = new Image();
+		Tile.CROSS.src = _c.toDataURL();
+
+		tile = Tile.BLANK;
+	}
+
+	this.flip = function(next) {
+		tile = next;
+		anim = 1;
 	}
 
 	this.update = function() {
-
+		if (anim > 0 ) {
+			anim -= 0.02;
+		}
 	}
 
 	this.draw = function(ctx) {
-		ctx.drawImage(tile, x, y);
+		if (anim <= 0) {
+			ctx.drawImage(tile, x, y);
+		}
+
+		var t = anim > 0.5 ? Tile.BLANK : tile;
+		ctx.drawImage(t, x, y);
 	}
 }
 
