@@ -134,9 +134,9 @@ function Tile(x, y) {
 		for (var i=0; i < 100; i += res) {
 			ctx.drawImage(t, i, 0, res, 100,
 				x + i - p*i + 50*p,
-				y,
+				y - i*p*0.2,
 				res,
-				100
+				100 + i*p*0.4
 			)
 		}
 	}
