@@ -132,11 +132,14 @@ function Tile(x, y) {
 		var p = -Math.abs(2*anim - 1) + 1;
 
 		for (var i=0; i < 100; i += res) {
+
+			var j = anim > 0.5 ? 100-i : i;
+
 			ctx.drawImage(t, i, 0, res, 100,
 				x + i - p*i + 50*p,
-				y - i*p*0.2,
+				y - j*p*0.2,
 				res,
-				100 + i*p*0.4
+				100 + j*p*0.4
 			)
 		}
 	}
