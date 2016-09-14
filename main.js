@@ -27,6 +27,10 @@
 // *** create flip animation ***
 // 10. this.flip in Tile class
 // 11. clear canvas, shrink in x-direction
+// 12. expand canvas to create 9 inner canvases (boxes)
+
+// <-------- STEP FIVE -------->
+// *** create mousedown event for flipping tiles ***
 
 var canvas, ctx;
 var data;
@@ -39,9 +43,13 @@ window.onload = function main() {
 
 	document.body.appendChild(canvas);
 
+	canvas.addEventListener("mousedown", mouseDown);
+
 	init();
 	tick();
 }
+
+
 
 function init() {
 	if (data == null) {
@@ -53,8 +61,7 @@ function init() {
 			data.push(new Tile(x, y));
 		}
 	}
-
-	data[0].flip(Tile.NOUGHT);
+	// data[0].flip(Tile.NOUGHT);
 }
 
 function tick() {
@@ -78,6 +85,15 @@ function render() {
 	for (var i=data.length; i--;) {
 		data[i].draw(ctx);
 	}
+}
+
+function mouseDown(evt) {
+	var el = evt.target;
+
+	var px = evt.clientX - el.offsetLeft;
+	var py = evt.clientY - el.offsetTop;
+
+	console.log(px + ", " + py);
 }
 
 function Tile(x, y) {
