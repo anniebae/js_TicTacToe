@@ -133,7 +133,7 @@ function Tile(x, y) {
 
 		for (var i=0; i < 100; i += res) {
 			ctx.drawImage(t, i, 0, res, 100,
-				x + i - p*i,
+				x + i - p*i + 50*p,
 				y,
 				res,
 				100
