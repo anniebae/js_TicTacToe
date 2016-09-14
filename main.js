@@ -129,7 +129,7 @@ function Tile(x, y) {
 
 		var res = 2;
 		var t = anim > 0.5 ? Tile.BLANK : tile;
-		var p = -anim + 1;
+		var p = -Math.abs(2*anim - 1) + 1;
 
 		for (var i=0; i < 100; i += res) {
 			ctx.drawImage(t, i, 0, res, 100,
