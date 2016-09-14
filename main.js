@@ -34,7 +34,7 @@ var data;
 
 window.onload = function main() {
 	canvas = document.createElement("canvas");
-	canvas.width = canvas.height = 200;
+	canvas.width = canvas.height = 3*120 + 20;
 	ctx = canvas.getContext("2d");
 
 	document.body.appendChild(canvas);
@@ -44,8 +44,17 @@ window.onload = function main() {
 }
 
 function init() {
-	data = new Tile(20,20);
-	data.flip(Tile.NOUGHT);
+	if (data == null) {
+		data = [];
+
+		for (var i=0; i<9; i++) {
+			var x = (i % 3)*120 + 20;
+			var y = Math.floor(i/3)*120 + 20;
+			data.push(new Tile(x, y));
+		}
+	}
+
+	data[0].flip(Tile.NOUGHT);
 }
 
 function tick() {
@@ -56,12 +65,19 @@ function tick() {
 }
 
 function update() {
-	data.update();
+	for (var i=data.length; i--;) {
+		data[i].update();
+	}
+
 }
 
 function render() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	data.draw(ctx);
+	// data.draw(ctx);
+
+	for (var i=data.length; i--;) {
+		data[i].draw(ctx);
+	}
 }
 
 function Tile(x, y) {
