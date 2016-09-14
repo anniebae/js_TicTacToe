@@ -1,3 +1,58 @@
+// <-------- STEP ONE -------->
+// *** create basic skeleton ***
+// 1. declare window.onload event
+// 2. declare variables (canvas, ctx)
+// 3. call and create init() & tick() function
+// 3a. tick() function will call itself using window.requestAnimationFrame
+// 3b. call and create update() & render() function
+
+// 4. create global variables (var canvas, ctx;)
+
+var canvas, ctx;
+
+
+window.onload = function main() {
+	canvas = document.createElement("canvas");
+	canvas.width = canvas.height = 200;
+	ctx = canvas.getContext("2d");
+
+	document.body.appendChild(canvas);
+
+	init();
+	tick();
+}
+
+function init() {
+
+}
+
+function tick() {
+	window.requestAnimationFrame(tick);
+
+	update();
+	render();
+}
+
+function update() {
+
+}
+
+function render() {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////
+
 var canvas, ctx;
 var data;
 var player;
