@@ -93,7 +93,19 @@ function mouseDown(evt) {
 	var px = evt.clientX - el.offsetLeft;
 	var py = evt.clientY - el.offsetTop;
 
-	console.log(px + ", " + py);
+	if (px % 120 >= 20 && py % 120 >= 20) {
+		var idx = Math.floor(px/120);
+		idx += Math.floor(py/120)*3;
+
+		if (data[idx].hasData()) {
+			return;
+		}
+		data[idx].flip(Tile.NOUGHT);
+
+		console.log(idx);
+	}
+
+	// console.log(px + ", " + py);
 }
 
 function Tile(x, y) {
@@ -106,7 +118,7 @@ function Tile(x, y) {
 		_c.width = _c.height = 100;
 		_ctx = _c.getContext("2d");
 
-		_ctx.fillStyle = "pink";
+		_ctx.fillStyle = "#574E58";
 		_ctx.lineWidth = 4;
 		_ctx.strokeStyle = "white";
 		_ctx.lineCap = "round"
@@ -140,6 +152,10 @@ function Tile(x, y) {
 		Tile.CROSS.src = _c.toDataURL();
 
 		tile = Tile.BLANK;
+	}
+
+	this.hasData = function() {
+		return tile !== Tile.BLANK;
 	}
 
 	this.flip = function(next) {
