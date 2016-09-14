@@ -6,10 +6,19 @@
 // 3a. tick() function will call itself using window.requestAnimationFrame
 // 3b. call and create update() & render() function
 
+// <-------- STEP TWO -------->
+// *** create first canvas square ***
 // 4. create global variables (var canvas, ctx;)
 // 5. style canvas (styles.css)
 // 6. create simple Tile class
-// 6a. create methods in Tile using 'this' keyword
+// 6a. create methods in Tile using 'this' keyword (this.update, this.draw)
+// 6b. declare 'data' variable
+// 6c. create new Tile with data var (function init)
+// 6d. draw data with context (function render)
+
+// <-------- STEP THREE -------->
+// *** create NOUGHT ***
+// 7. create inner canvas (var _c)
 
 var canvas, ctx;
 var data;
@@ -61,7 +70,17 @@ function Tile(x, y) {
 		Tile.BLANK = new Image();
 		Tile.BLANK.src = _c.toDataURL();
 
-		tile = Tile.BLANK
+		// Nought
+		_ctx.fillRect(0, 0, 100, 100);
+
+		_ctx.beginPath();
+		_ctx.arc(50, 50, 30, 0, 2*Math.PI);
+		_ctx.stroke();
+
+		Tile.NOUGHT = new Image();
+		Tile.NOUGHT.src = _c.toDataURL();
+
+		tile = Tile.NOUGHT;
 	}
 
 	this.update = function() {
