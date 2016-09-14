@@ -34,6 +34,7 @@
 
 var canvas, ctx;
 var data;
+var player;
 
 
 window.onload = function main() {
@@ -61,6 +62,8 @@ function init() {
 			data.push(new Tile(x, y));
 		}
 	}
+
+	player = Tile.NOUGHT;
 	// data[0].flip(Tile.NOUGHT);
 }
 
@@ -100,12 +103,9 @@ function mouseDown(evt) {
 		if (data[idx].hasData()) {
 			return;
 		}
-		data[idx].flip(Tile.NOUGHT);
-
-		console.log(idx);
+		data[idx].flip(player);
+		player = player === Tile.NOUGHT ? Tile.CROSS : Tile.NOUGHT;
 	}
-
-	// console.log(px + ", " + py);
 }
 
 function Tile(x, y) {
