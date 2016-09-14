@@ -102,7 +102,7 @@ function mouseDown(evt) {
 
 		if (data[idx].hasData()) {
 			return;
-		}
+		} 
 		data[idx].flip(player);
 		player = player === Tile.NOUGHT ? Tile.CROSS : Tile.NOUGHT;
 	}
