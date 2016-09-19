@@ -34,7 +34,7 @@
 
 var canvas, ctx;
 var data;
-var player;
+var player, ai;
 
 
 window.onload = function main() {
@@ -64,7 +64,8 @@ function init() {
 	}
 
 	player = Tile.NOUGHT;
-	// data[0].flip(Tile.NOUGHT);
+	ai = new AIPlayer();
+	ai.setSeed(player === Tile.NOUGHT ? Tile.CROSS : Tile.NOUGHT);
 }
 
 function tick() {
@@ -116,7 +117,7 @@ function Tile(x, y) {
 	if (tile == null) {
 		var _c = document.createElement("canvas");
 		_c.width = _c.height = 100;
-		_ctx = _c.getContext("2d");
+		var _ctx = _c.getContext("2d");
 
 		_ctx.fillStyle = "#574E58";
 		_ctx.lineWidth = 4;
@@ -154,8 +155,16 @@ function Tile(x, y) {
 		tile = Tile.BLANK;
 	}
 
+	this.equals = function(_tile) {
+		return tile === _tile;
+	}
+
 	this.hasData = function() {
 		return tile !== Tile.BLANK;
+	}
+
+	this.set = function(next) {
+		tile = next;
 	}
 
 	this.flip = function(next) {
@@ -194,8 +203,118 @@ function Tile(x, y) {
 }
 
 
+function AIPlayer(data) {
+	var data = data, seed, oppSeed;
 
+	this.setSeed = function(_seed) {
+		seed = _seed;
+		oppSeed = _seed === Tile.NOUGHT ? Tile.CROSS : Tile.NOUGHT;
+	}
 
+	this.getSeed = function() {
+		return seed;
+	}
+
+	this.move = function() {
+		return minimax(2, seed) [1];
+	}
+
+	function minimax(depth, player) {
+		var nextMoves = getValidMoves();
+		var best = (player === seed) ? -1e100 ? 1e100,
+			current,
+			bestIdx = -1;
+
+		if (nextMoves.length === 0 || depth === 0) {
+			best = this.evaluate();
+		} else {
+			for (var i = nextMoves.length; i--;) {
+				var m = nextMoves[i];
+				data[m].set(player);
+
+				if (player === seed) {
+					current = minimax(depth-1, oppSeed)[1];
+
+					if (current > best) {
+						best = current;
+						bestidx = m;
+					}
+				} else {
+					current = minimax(depth-1, seed)[1];
+					if (current < best) {
+						best = current;
+						bestidx = m;
+					}
+				}
+
+				data[m].set(Tile.BLANK);
+			}
+		}
+		return [best, idx];
+	}
+
+	function getValidMoves() {
+		var nm = [];
+		if (hasWon(seed) || hasWon(oppSeed)) {
+			return nm;
+		}
+		for (var i = data.length; i--;) {
+			if (!data[i].hasData()) {
+				nm.push(i);
+			}
+		}
+	}
+
+	function evaluate() {
+		var s = 0;
+		s += evaluateLine(0,1,2);
+		s += evaluateLine(3,4,5);
+		s += evaluateLine(6,7,8);
+		s += evaluateLine(0,3,6);
+		s += evaluateLine(1,4,7);
+		s += evaluateLine(2,5,8);
+		s += evaluateLine(0,4,8);
+		s += evaluateLine(2,4,6);
+		return s;
+	}
+
+	function evaluateLine(idx1,idx2,idx3) {
+		var s = 0;
+
+		if (data[idx1].equals(oppSeed)) {
+			s = 1;
+		} else if (data[idx1].equals(oppSeed)) {
+			s = -1;
+		}
+
+		if (data[idx2].equals(oppSeed)) {
+			if (s === 1) {
+				s = 10;
+			}
+		} else if (data[idx2].equals(oppSeed)) {
+			s = 0;
+		} else {
+			s = 1;
+		}
+
+		if (data[idx3].equals(oppSeed)) {
+
+		} else if (data[idx3].equals(oppSeed)) {
+			
+		}
+
+		return s;
+	}
+
+	var winningPatterns = (function() {
+
+	})();
+
+	this.hasWon = function(player) {
+
+	}
+
+}
 
 
 
