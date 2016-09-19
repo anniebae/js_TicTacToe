@@ -221,36 +221,32 @@ function AIPlayer(data) {
 
 	function minimax(depth, player) {
 		var nextMoves = getValidMoves();
-		var best = (player === seed) ? -1e100 ? 1e100,
+		var best = (player === seed) ? -1e100 : 1e100,
 			current,
-			bestIdx = -1;
-
+			bestidx = -1;
 		if (nextMoves.length === 0 || depth === 0) {
-			best = this.evaluate();
+			best = evaluate();
 		} else {
-			for (var i = nextMoves.length; i--;) {
+			for (var i = nextMoves.length;i--;) {
 				var m = nextMoves[i];
 				data[m].set(player);
-
 				if (player === seed) {
-					current = minimax(depth-1, oppSeed)[1];
-
+					current = minimax(depth-1, oppSeed)[0];
 					if (current > best) {
 						best = current;
 						bestidx = m;
 					}
 				} else {
-					current = minimax(depth-1, seed)[1];
+					current = minimax(depth-1, seed)[0];
 					if (current < best) {
 						best = current;
 						bestidx = m;
 					}
 				}
-
 				data[m].set(Tile.BLANK);
 			}
 		}
-		return [best, idx];
+		return [best, bestidx];
 	}
 
 	function getValidMoves() {
@@ -281,35 +277,65 @@ function AIPlayer(data) {
 	function evaluateLine(idx1,idx2,idx3) {
 		var s = 0;
 
-		if (data[idx1].equals(oppSeed)) {
+		if (data[idx1].equals(seed)) {
 			s = 1;
 		} else if (data[idx1].equals(oppSeed)) {
 			s = -1;
 		}
 
-		if (data[idx2].equals(oppSeed)) {
+		if (data[idx2].equals(seed)) {
 			if (s === 1) {
 				s = 10;
+			} else if (s === -1) {
+				return 0;
+			} else {
+				s = 1;
 			}
 		} else if (data[idx2].equals(oppSeed)) {
-			s = 0;
-		} else {
-			s = 1;
+			if (s === -1) {
+				s = -10;
+			} else if (s === 1) {
+				return 0;
+			} else {
+				s = -1;
+			}
 		}
 
-		if (data[idx3].equals(oppSeed)) {
+		if (data[idx3].equals(seed)) {
+			if (s > 0) {
+				s *= 10;
+			} else if (s < 0) {
+				return 0;
+			} else {
+				s = 1;
+			}
 
 		} else if (data[idx3].equals(oppSeed)) {
-			
+			if (s < 0) {
+				s *= 10;
+			} else if (s > 0) {
+				return 0;
+			} else {
+				s = -1;
+			}			
 		}
 
 		return s;
 	}
 
 	var winningPatterns = (function() {
-
+		// wining patterns
+		var wp = ["111000000", "000111000", "000000111",
+				  "100100100", "010010010", "001001001",
+				  "100010001", "001010100"],
+			r = new Array(wp.length);
+		for (var i = wp.length; i--;) {
+			r[i] = parseInt(wp[i], 10);
+		}
+		return r;
 	})();
 
+	console.log(winningPatterns);
 	this.hasWon = function(player) {
 
 	}
