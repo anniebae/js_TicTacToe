@@ -36,6 +36,7 @@ var canvas, ctx;
 var data;
 var player, ai;
 var isPlayer, aiMoved;
+
 window.onload = function main() {
 	canvas = document.createElement("canvas");
 	canvas.width = canvas.height = 3*120 + 20;
